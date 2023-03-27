@@ -1,63 +1,63 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.com" lang="en">
+<!DOCTYPE HTML>
+<html  xmlns:th="http://www.thymeleaf.com"
+       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+       layout:decorate="~{layout/layoutGameStudio.html}"
+       lang="en">
 <head>
-  <title>Minesweeper</title>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-  <link th:href="@{/styles/tailwind.css}" rel="stylesheet" />
+    <title>GameStudio - Minesweeper</title>
 </head>
-<body class="p-4">
-  <h1 class="header">
-    Minesweeper Game
-  </h1>
-  <p class="subheader">
-    May the force be with you.
-  </p>
+<body>
 
-  <div class="minefield"
-       style="grid-template-columns: 0fr 0fr 0fr 0fr;">
-    <div class="tile tile-1">1</div>
-    <div class="tile tile-2">2</div>
-    <div class="tile closed"></div>
-    <div class="tile tile-3">3</div>
-    <div class="tile tile-4">4</div>
-    <div class="tile closed"></div>
-    <div class="tile tile-5">5</div>
-    <div class="tile closed"></div>
-    <div class="tile tile-6">6</div>
-    <div class="tile tile-7">7</div>
-    <div class="tile closed"></div>
-    <div class="tile tile-8">8</div>
-    <div class="tile closed"></div>
-    <div class="tile marked"></div>
-    <div class="tile mine"></div>
-    <div class="tile tile-1">1</div>
-  </div>
+<main layout:fragment="content">
 
-  <h2 class="subheader">Add a Comment</h2>
+<!--/*@thymesVar id="minesController" type="sk.tuke.gamestudio.server.controller.MinesController"*/-->
+<h2>Minesweeper</h2>
 
-  <form class="mb-6"
-        id="commentForm"
-        onsubmit="alert('comment added!');return false">
-    <div class="mb-6">
-      <label for="name"
-             class="input-label">
-        Your name:
-      </label>
-      <input class="input-field"
-             type="text" id="name" name="name">
-    </div>
-    <div class="mb-6">
-      <label for="comment"
-             class="input-label">
-        Comment:
-      </label>
-      <input class="input-field"
-             type="text" id="comment" name="comment">
-    </div>
-    <button class="button-primary"
-            type="submit">Send</button>
-  </form>
+<a class="abutton" th:if="not ${@minesController.marking}" href="/mines/chmode">Change to mark</a>
+<a class="abutton" th:if="${@minesController.isMarking()}" href="/mines/chmode">Change to open</a>
+<a class="abutton" href="/mines/new">New game</a>
 
-  <a class="button-link" href="/">&#x2190; Back to Home</a>
+
+
+<section>
+    <table  class='minefield'>
+        <tr th:each="row: ${@minesController.fieldTiles}">
+            <td th:each="tile: ${row}" th:attr="class=${@minesController.getTileClass(tile)}">
+                <a th:if="${tile.isNotOpen()} and ${@minesController.isPlaying()}"
+                   th:href="@{/mines(row=${rowStat.index}, column=${tileStat.index})}">
+                    <span th:text="${@minesController.getTileText(tile)}"></span>
+                </a>
+                <span th:if="not(${tile.isNotOpen()} and ${@minesController.isPlaying()})"
+                      th:text="${@minesController.getTileText(tile)}"></span>
+            </td>
+        </tr>
+    </table>
+</section>
+
+<section>
+    <h3>Best Scores</h3>
+
+    <table class="scores">
+        <thead>
+        <tr>
+            <th>Number</th>
+            <th>Name</th>
+            <th>Score</th>
+            <th>Date and time</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="score: ${@minesController.getTopScores()}">
+            <td th:text="${scoreStat.index+1}"></td>
+            <td th:text="${score.player}"></td>
+            <td th:text="${score.getPoints()}"></td>
+            <td th:text="${score.getPlayedOn()}"></td>
+        </tr>
+        </tbody>
+    </table>
+</section>
+
+</main>
+
 </body>
 </html>

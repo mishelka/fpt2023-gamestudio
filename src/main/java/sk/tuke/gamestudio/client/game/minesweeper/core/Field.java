@@ -34,6 +34,10 @@ public class Field {
     private final long startTimeInMs;
     private int score;
 
+    private boolean justFinished=false;
+
+    private boolean marking=false;
+
     /**
      * Constructor.
      *
@@ -219,7 +223,27 @@ public class Field {
         return score;
     }
 
+    public Tile[][] getTiles() {
+        return tiles;
+    }
+
     public int getScore() {
         return score;
+    }
+
+    public boolean isJustFinished() {
+        return justFinished;
+    }
+
+    public void setJustFinished(boolean justFinished) {
+        this.justFinished = justFinished;
+    }
+
+    public boolean isMarking() {
+        return marking;
+    }
+
+    public void setMarking(boolean marking) {
+        this.marking = marking;
     }
 }
