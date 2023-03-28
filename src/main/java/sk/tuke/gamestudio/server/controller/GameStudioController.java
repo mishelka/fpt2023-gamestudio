@@ -8,4 +8,6 @@ public class GameStudioController {
     @RequestMapping("/")
     public String mainPage(){return "index";}
 
+    @RequestMapping("/miska")
+    public String minesMiska(){return "mines-miska";}
 }

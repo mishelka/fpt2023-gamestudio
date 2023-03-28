@@ -636,8 +636,8 @@ video {
 .input-label {
   margin-bottom: 0.5rem;
   display: block;
-  font-size: 0.875rem;
-  line-height: 1.25rem;
+  font-size: 1.25rem;
+  line-height: 1.75rem;
   font-weight: 500;
   --tw-text-opacity: 1;
   color: rgb(17 24 39 / var(--tw-text-opacity));
@@ -656,6 +656,10 @@ video {
 
 .mt-2 {
   margin-top: 0.5rem;
+}
+
+.table {
+  display: table;
 }
 
 .p-4 {
@@ -730,8 +734,8 @@ video {
 }
 
 .minefield .tile {
-  height: 1.5rem;
-  width: 1.5rem;
+  height: 2.5rem;
+  width: 2.5rem;
   align-items: center;
   justify-content: center;
   border-radius: 0.25rem;

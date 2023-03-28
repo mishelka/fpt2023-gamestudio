@@ -4,6 +4,7 @@
   <title>Minesweeper</title>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <link th:href="@{/styles/tailwind.css}" rel="stylesheet" />
+  <script src="/mines-miska.js"></script>
 </head>
 <body class="p-4">
   <h1 class="header">
@@ -13,24 +14,12 @@
     May the force be with you.
   </p>
 
-  <div class="minefield"
+  <button class="button-primary mb-6"
+          onclick="newGame()">New Game</button>
+
+  <div id="minefield"
+       class="minefield"
        style="grid-template-columns: 0fr 0fr 0fr 0fr;">
-    <div class="tile tile-1">1</div>
-    <div class="tile tile-2">2</div>
-    <div class="tile closed"></div>
-    <div class="tile tile-3">3</div>
-    <div class="tile tile-4">4</div>
-    <div class="tile closed"></div>
-    <div class="tile tile-5">5</div>
-    <div class="tile closed"></div>
-    <div class="tile tile-6">6</div>
-    <div class="tile tile-7">7</div>
-    <div class="tile closed"></div>
-    <div class="tile tile-8">8</div>
-    <div class="tile closed"></div>
-    <div class="tile marked"></div>
-    <div class="tile mine"></div>
-    <div class="tile tile-1">1</div>
   </div>
 
   <h2 class="subheader">Add a Comment</h2>
