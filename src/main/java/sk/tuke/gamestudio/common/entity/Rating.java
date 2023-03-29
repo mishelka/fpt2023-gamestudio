@@ -11,7 +11,7 @@ import java.util.Date;
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = {"game", "username"}))
 public class Rating {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long ident;
 
     @Column(nullable = false, length = 64)

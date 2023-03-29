@@ -5,6 +5,7 @@ table > thead {
 }
 table thead th {
   border-bottom: 2px solid #10606F;
+  text-align: start;
 }
 table thead th, table tbody td {
   padding: 0.25rem 0.5rem;

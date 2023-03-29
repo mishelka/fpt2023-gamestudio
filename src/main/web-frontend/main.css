@@ -3,10 +3,10 @@
 @tailwind utilities;
 
 .header {
-  @apply mb-6 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white;
+  @apply mb-6 mt-6 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white;
 }
 .subheader {
-  @apply mb-6 text-xl font-normal text-gray-500 lg:text-xl dark:text-gray-400;
+  @apply mb-4 mt-10 text-xl font-normal text-gray-500 lg:text-xl dark:text-gray-400;
 }
 
 @layer components {
@@ -16,8 +16,14 @@
   .button-primary {
     @apply text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800;
   }
+  .button-secondary {
+    @apply text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600;
+  }
+  .input-field-inline {
+    @apply bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 w-auto inline-block;
+  }
   .input-field {
-    @apply bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500;
+    @apply bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 w-full block;
   }
   .input-label {
     @apply block mb-2 text-xl font-medium text-gray-900 dark:text-white;
@@ -71,4 +77,36 @@
 .minefield .tile.mine {
   @apply bg-red-500;
   background-image: url('/images/mines/mine.svg');
+}
+
+.default-modal {
+  @apply fixed top-0 left-0 right-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] md:h-full;
+  background-color: rgba(0, 0, 0, 0.25);
+  transition: opacity 0.3s ease;
+}
+
+.modal-container {
+  @apply relative w-full h-full max-w-2xl md:h-auto;
+}
+
+.default-modal .modal {
+  @apply relative bg-white rounded-lg shadow dark:bg-gray-700;
+}
+
+.modal .modal-header {
+  @apply flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600;
+}
+.modal .modal-header. header-title {
+  @apply text-xl font-semibold text-gray-900 dark:text-white;
+}
+.modal .modal-header .close-button {
+  @apply text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white;
+}
+
+.modal .modal-content {
+  @apply p-6 space-y-6;
+}
+
+.modal .modal-actions {
+  @apply flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600;
 }

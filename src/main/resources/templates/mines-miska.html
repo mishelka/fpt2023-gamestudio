@@ -4,6 +4,7 @@
   <title>Minesweeper</title>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <link th:href="@{/styles/tailwind.css}" rel="stylesheet" />
+  <link rel="stylesheet" type="text/css" href="styles/styles.css">
   <script src="/mines-miska.js"></script>
 </head>
 <body class="p-4">
@@ -14,19 +15,57 @@
     May the force be with you.
   </p>
 
-  <button class="button-primary mb-6"
-          onclick="newGame()">New Game</button>
+  <form name="newGameForm" class="mb-6">
+    <div class="grid grid-cols-4 gap-4">
+      <input class="input-field-inline" min="0" max="100"
+             type="number" id="rows" name="rows"
+             placeholder="Number of rows" value="10">
+      <input class="input-field-inline"
+             type="number" id="cols" name="cols"
+             placeholder="Number of columns" value="10">
+      <input class="input-field-inline"
+             placeholder="Number of mines"
+             type="number" id="mines" name="mines" value="1">
+      <button class="button-primary"
+              onclick="newGame(event)">New Game</button>
+    </div>
+  </form>
 
   <div id="minefield"
-       class="minefield"
-       style="grid-template-columns: 0fr 0fr 0fr 0fr;">
+       class="minefield">
   </div>
+
+  <h2 class="subheader">Top Scores</h2>
+
+  <table class="table-fixed w-full">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Score</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tbody id="scores"></tbody>
+  </table>
+
+  <h2 class="subheader">Comments</h2>
+
+  <table class="table-fixed w-full">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Comment</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tbody id="comments"></tbody>
+  </table>
 
   <h2 class="subheader">Add a Comment</h2>
 
   <form class="mb-6"
-        id="commentForm"
-        onsubmit="alert('comment added!');return false">
+        name="commentForm"
+        onsubmit="addComment();return false">
     <div class="mb-6">
       <label for="name"
              class="input-label">
@@ -48,5 +87,43 @@
   </form>
 
   <a class="button-link" href="/">&#x2190; Back to Home</a>
+
+  <!-- Main modal -->
+  <div id="winLoseModal" aria-hidden="true"
+       class="default-modal" style="opacity: 0; z-index: -10;">
+    <div class="modal-container">
+      <!-- Modal content -->
+      <div class="modal">
+        <!-- Modal header -->
+        <div class="modal-header">
+          <h3 class="header-title" id="modalHeader">
+            Header
+          </h3>
+          <button type="button"
+                  class="close-button"
+                  data-modal-hide="winLoseModal"
+                  onclick="closeModal()">
+            <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+            <span class="sr-only">Close modal</span>
+          </button>
+        </div>
+        <!-- Modal body -->
+        <div class="modal-content" id="modalContent">
+          Content
+        </div>
+        <!-- Modal footer -->
+        <div class="modal-actions">
+          <button data-modal-hide="winLoseModal"
+                  type="button"
+                  class="button-primary"
+                  onclick="newGameModal()">New Game</button>
+          <button data-modal-hide="winLoseModal"
+                  type="button"
+                  class="button-secondary"
+                  onclick="closeModal()">Exit</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
