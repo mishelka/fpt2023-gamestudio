@@ -5,7 +5,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <link th:href="@{/styles/tailwind.css}" rel="stylesheet" />
   <link rel="stylesheet" type="text/css" href="styles/styles.css">
-  <script type="module" src="/mines-miska-rest.js"></script>
+  <script type="module" src="/mines-miska-client-side.js"></script>
 </head>
 <body class="p-4">
   <h1 class="header">
@@ -26,8 +26,7 @@
       <input class="input-field-inline"
              placeholder="Number of mines"
              type="number" id="mines" name="mines" value="1">
-      <button class="button-primary"
-              onclick="newGame(event)">New Game</button>
+      <button class="button-primary" id="formNewGameButton">New Game</button>
     </div>
   </form>
 
@@ -35,31 +34,44 @@
        class="minefield">
   </div>
 
-  <h2 class="subheader">Top Scores</h2>
+  <div class="flex flex-row mb-3">
+    <button id="scoreTabButton"
+            class="button-primary mr-3">Top Scores</button>
+    <button id="commentTabButton"
+            class="button-secondary">Comments</button>
+  </div>
 
-  <table class="table-fixed w-full">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Score</th>
-        <th>Date</th>
-      </tr>
-    </thead>
-    <tbody id="scores"></tbody>
-  </table>
+  <div class="tab-container w-full">
+    <div id="score-tab" class="w-full">
+      <table class="table-fixed w-full">
+        <thead>
+        <tr>
+          <th>Name</th>
+          <th>Score</th>
+          <th>Date</th>
+        </tr>
+        </thead>
+        <tbody id="scores"></tbody>
+      </table>
+    </div>
 
-  <h2 class="subheader">Comments</h2>
+    <div id="comment-tab" class="w-full" style="display: none;">
+      <table class="table-fixed w-full">
+        <thead>
+        <tr>
+          <th>Name</th>
+          <th>Comment</th>
+          <th>Date</th>
+        </tr>
+        </thead>
+        <tbody id="comments"></tbody>
+      </table>
+    </div>
+  </div>
 
-  <table class="table-fixed w-full">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Comment</th>
-        <th>Date</th>
-      </tr>
-    </thead>
-    <tbody id="comments"></tbody>
-  </table>
+
+
+<!--  <h2 class="subheader">Comments</h2>-->
 
   <h2 class="subheader">Add a Comment</h2>
 
@@ -99,10 +111,10 @@
           <h3 class="header-title" id="modalHeader">
             Header
           </h3>
-          <button type="button"
+          <button id="modalCloseButton"
+                  type="button"
                   class="close-button"
-                  data-modal-hide="winLoseModal"
-                  onclick="closeModal()">
+                  data-modal-hide="winLoseModal">
             <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
             <span class="sr-only">Close modal</span>
           </button>
@@ -113,14 +125,14 @@
         </div>
         <!-- Modal footer -->
         <div class="modal-actions">
-          <button data-modal-hide="winLoseModal"
+          <button id="modalNewGameButton"
+                  data-modal-hide="winLoseModal"
                   type="button"
-                  class="button-primary"
-                  onclick="newGameModal()">New Game</button>
-          <button data-modal-hide="winLoseModal"
+                  class="button-primary">New Game</button>
+          <button id="modalExitButton"
+                  data-modal-hide="winLoseModal"
                   type="button"
-                  class="button-secondary"
-                  onclick="closeModal()">Exit</button>
+                  class="button-secondary">Exit</button>
         </div>
       </div>
     </div>

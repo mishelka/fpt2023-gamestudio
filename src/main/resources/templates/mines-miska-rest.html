@@ -5,7 +5,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <link th:href="@{/styles/tailwind.css}" rel="stylesheet" />
   <link rel="stylesheet" type="text/css" href="styles/styles.css">
-  <script type="module" src="/mines-miska-rest.js"></script>
+  <script src="/mines-miska-rest.js"></script>
 </head>
 <body class="p-4">
   <h1 class="header">
@@ -35,31 +35,42 @@
        class="minefield">
   </div>
 
-  <h2 class="subheader">Top Scores</h2>
+  <div class="flex flex-row mb-3">
+    <button id="scoreTabButton"
+            class="button-primary mr-3"
+            onclick="displayScores()">Top Scores</button>
+    <button id="commentTabButton"
+            class="button-secondary"
+            onclick="displayComments()">Comments</button>
+  </div>
 
-  <table class="table-fixed w-full">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Score</th>
-        <th>Date</th>
-      </tr>
-    </thead>
-    <tbody id="scores"></tbody>
-  </table>
+  <div class="tab-container w-full">
+    <div id="score-tab" class="w-full">
+      <table class="table-fixed w-full">
+        <thead>
+        <tr>
+          <th>Name</th>
+          <th>Score</th>
+          <th>Date</th>
+        </tr>
+        </thead>
+        <tbody id="scores"></tbody>
+      </table>
+    </div>
 
-  <h2 class="subheader">Comments</h2>
-
-  <table class="table-fixed w-full">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Comment</th>
-        <th>Date</th>
-      </tr>
-    </thead>
-    <tbody id="comments"></tbody>
-  </table>
+    <div id="comment-tab" class="w-full" style="display: none;">
+      <table class="table-fixed w-full">
+        <thead>
+        <tr>
+          <th>Name</th>
+          <th>Comment</th>
+          <th>Date</th>
+        </tr>
+        </thead>
+        <tbody id="comments"></tbody>
+      </table>
+    </div>
+  </div>
 
   <h2 class="subheader">Add a Comment</h2>
 

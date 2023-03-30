@@ -8,6 +8,9 @@ public class GameStudioController {
     @RequestMapping("/")
     public String mainPage(){return "index";}
 
-    @RequestMapping("/miska")
-    public String minesMiska(){return "mines-miska";}
+    @RequestMapping("/miska-rest")
+    public String minesMiskaRest(){return "mines-miska-rest";}
+
+    @RequestMapping("/miska-client")
+    public String minesMiskaClient(){return "mines-miska-client-side";}
 }

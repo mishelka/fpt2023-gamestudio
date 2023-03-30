@@ -1,8 +1,9 @@
+import {Field, GameState, TileState} from './mines.model.js';
+
 const API_URL = 'http://localhost:8080/api';
-const MINES_URL = API_URL + '/mines';
-let field;
-let scores = [];
-let comments = [];
+export let field;
+export let scores = [];
+export let comments = [];
 
 class Score {
   id = -1;
@@ -17,7 +18,6 @@ class Score {
     this.playedOn = JSON.parse(JSON.stringify(Date.now()));
   }
 }
-
 class Comment {
   id = -1;
   game = 'mines';
@@ -72,7 +72,9 @@ class Comment {
   }
 }
 
-const renderField = () => {
+function renderField() {
+  console.log(field);
+  if(!field) return;
   // <div class="tile tile-1" row="0" col="0">1</div>
   // <div class="tile closed"></div>
   // <div class="tile marked"></div>
@@ -86,11 +88,11 @@ const renderField = () => {
       const tile = field.tiles[r][c];
       const tileElem = document.createElement("div");
 
-      if(tile.value === undefined && tile.state === "OPEN") {
+      if(tile.value === undefined && tile.state === GameState.OPEN) {
         tileElem.setAttribute("class", "tile mine " + tile.state.toLowerCase());
       } else {
         tileElem.setAttribute("class", "tile tile-" + tile.value + " " + tile.state.toLowerCase());
-        if(tile.state === "OPEN" && tile.value !== 0) {
+        if(tile.state === TileState.OPEN && tile.value !== 0) {
           tileElem.innerHTML = tile.value;
         }
       }
@@ -101,9 +103,28 @@ const renderField = () => {
       mineFieldElem.appendChild(tileElem);
     }
   }
-};
+}
 
-const renderScores = () => {
+export function displayScores() {
+  // style="display: none;"
+  //  score-tab
+  //  comment-tab
+  const scoreTabElem = document.querySelector("#score-tab");
+  const commentTabElem = document.querySelector("#comment-tab");
+
+  scoreTabElem.setAttribute("style", "");
+  commentTabElem.setAttribute("style", 'style="display: none;"');
+}
+
+export function displayComments() {
+  const scoreTabElem = document.querySelector("#score-tab");
+  const commentTabElem = document.querySelector("#comment-tab");
+
+  scoreTabElem.setAttribute("style", 'style="display: none;"');
+  commentTabElem.setAttribute("style", "");
+}
+
+function renderScores() {
   const scoresElem = document.querySelector("#scores");
   scoresElem.innerHTML = ""; //reset the score table in the UI
 
@@ -116,8 +137,8 @@ const renderScores = () => {
       </tr>
     `;
   }
-};
-const renderComments = () => {
+}
+function renderComments() {
   const commentsElem = document.querySelector("#comments");
   commentsElem.innerHTML = ""; //reset the score table in the UI
 
@@ -130,18 +151,18 @@ const renderComments = () => {
       </tr>
     `;
   }
-};
+}
 
-const checkGameState = async () => {
-  if(field.state !== "PLAYING") {
+function checkGameState() {
+  if(field.state !== GameState.PLAYING) {
     const modalElem = document.querySelector("#winLoseModal");
     const modalTitle = document.querySelector("#modalHeader");
     const modalBody = document.querySelector("#modalContent");
 
-    const title = field.state === "FAILED" ? 'You lost!' : 'You won!';
+    const title = field.state === GameState.FAILED ? 'You lost!' : 'You won!';
     const text = title + ' Do you want to play again?';
 
-    if(field.state === "SOLVED") addScore();
+    if(field.state === GameState.SOLVED) addScore();
 
     modalTitle.innerHTML = title;
     modalBody.innerHTML = text;
@@ -152,48 +173,29 @@ const checkGameState = async () => {
   }
 }
 
-const openTile = async (row, col) => {
-  if(field.state !== "PLAYING") return;
+export function openTile(row, col) {
+  if(field.state !== GameState.PLAYING) return;
 
-  try {
-    const response = await fetch(`${MINES_URL}/open?row=${row}&col=${col}`);
-    if(response.status === 200) {
-      field = await response.json();
-      renderField();
-      checkGameState();
-    }
-  } catch(err) {
-    console.error("Sorry, an error occured", err);
-  }
+  field.openTile(row, col);
+  renderField();
+  checkGameState();
 }
-const markTile = async (row, col, event) => {
+export function markTile(row, col, event) {
   event.preventDefault();
-  if(field.state !== "PLAYING") return;
+  if(field.state !== GameState.PLAYING) return;
 
-  try {
-    const response = await fetch(`${MINES_URL}/mark?row=${row}&col=${col}`).then(
-      response => {
-        if(response.status === 200) {
-          response.json().then(data => {
-            field = data;
-            renderField();
-          });
-        }
-      }
-    )
-  } catch(err) {
-    console.error("Sorry, an error occured", err);
-  }
+  field.markTile(row, col);
+  renderField();
 }
 
-// async function getDataFromAPI() {...}
-const newGame = async (event) => {
+export function newGame(event) {
   if(event)
     event.preventDefault(); //prevent browser refresh on form submit
 
-  let rows = document.newGameForm.rows.value;
-  let cols = document.newGameForm.cols.value;
-  let mines = document.newGameForm.mines.value;
+  //problem bol, ze do new Field mi isli stringy, takze tam dam vsade +, aby z toho bolo cislo :)
+  let rows = +document.newGameForm.rows.value;
+  let cols = +document.newGameForm.cols.value;
+  let mines = +document.newGameForm.mines.value;
 
   if(!rows) rows = 10;
   if(!cols) cols = 10;
@@ -201,18 +203,12 @@ const newGame = async (event) => {
 
   console.log(rows, cols, mines);
 
-  try {
-    const response = await fetch(`${MINES_URL}/new?rows=${rows}&cols=${cols}&mines=${mines}`);
-    if(response.status === 200) {
-      field = await response.json();
-      renderField();
-    }
-  } catch(err) {
-    console.error("Sorry, an error occured", err);
-  }
-};
+  field = new Field(rows, cols, mines);
 
-const loadScores = async () => {
+  renderField();
+}
+
+async function loadScores() {
   try {
     const response = await fetch(API_URL +  '/score/mines');
     if(response.status === 200) {
@@ -223,7 +219,7 @@ const loadScores = async () => {
     console.error("Sorry, an error occured", err);
   }
 }
-const loadComments = async () => {
+async function loadComments() {
   try {
     const response = await fetch(API_URL +  '/comment/mines');
     if(response.status === 200) {
@@ -235,7 +231,7 @@ const loadComments = async () => {
   }
 }
 
-const addScore = async () => {
+async function addScore() {
   let score = new Score('miska', field.score);
   delete score.id;
 
@@ -255,9 +251,9 @@ const addScore = async () => {
   } catch (error) {
     console.error(error);
   }
-};
+}
 
-const addComment = async () => {
+export async function addComment() {
   const player = document.commentForm.name.value;
   const message = document.commentForm.comment.value;
 
@@ -290,13 +286,13 @@ const addComment = async () => {
   } catch (error) {
     console.error(error);
   }
-};
+}
 
-const newGameModal = async () => {
+export function newGameModal() {
   newGame();
   closeModal();
 }
-const closeModal = async () => {
+export function closeModal() {
   const modalElem = document.querySelector("#winLoseModal");
   // modalElem.classList.toggle('hidden');
   modalElem.setAttribute('style', 'opacity: 0; z-index: -10;');
@@ -308,6 +304,14 @@ window.onload = () => {
   loadComments();
   //loadRating();
   newGame();
+
+  document.querySelector("#scoreTabButton").addEventListener("click", displayScores);
+  document.querySelector("#commentTabButton").addEventListener("click", displayComments);
+  document.querySelector("#formNewGameButton").addEventListener("click", newGame);
+  document.querySelector("#modalExitButton").addEventListener("click", closeModal);
+  document.querySelector("#modalCloseButton").addEventListener("click", closeModal);
+  document.querySelector("#modalNewGameButton").addEventListener("click", newGameModal);
+
 }//when DOM is ready and all content, including images, is loaded
 // window.addEventListener("load", renderField);
 // $(document).ready(renderField); //when the DOM is ready //you have to have jquery added in head

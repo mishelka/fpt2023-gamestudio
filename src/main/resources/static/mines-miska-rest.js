@@ -17,7 +17,6 @@ class Score {
     this.playedOn = JSON.parse(JSON.stringify(Date.now()));
   }
 }
-
 class Comment {
   id = -1;
   game = 'mines';
@@ -233,6 +232,39 @@ const loadComments = async () => {
   } catch(err) {
     console.error("Sorry, an error occured", err);
   }
+}
+
+function displayScores() {
+  // style="display: none;"
+  //  score-tab
+  //  comment-tab
+  const scoreTabElem = document.querySelector("#score-tab");
+  const commentTabElem = document.querySelector("#comment-tab");
+  const scoreTabButtonElem = document.querySelector("#scoreTabButton");
+  const commentTabButtonElem = document.querySelector("#commentTabButton");
+
+  scoreTabElem.setAttribute("style", "");
+  commentTabElem.setAttribute("style", 'display: none;');
+
+  scoreTabButtonElem.classList.toggle("button-primary", true);
+  scoreTabButtonElem.classList.toggle("button-secondary", false);
+  commentTabButtonElem.classList.toggle("button-primary", false);
+  commentTabButtonElem.classList.toggle("button-secondary", true);
+}
+
+function displayComments() {
+  const scoreTabElem = document.querySelector("#score-tab");
+  const commentTabElem = document.querySelector("#comment-tab");
+  const scoreTabButtonElem = document.querySelector("#scoreTabButton");
+  const commentTabButtonElem = document.querySelector("#commentTabButton");
+
+  scoreTabElem.setAttribute("style", 'display: none;');
+  commentTabElem.setAttribute("style", "");
+
+  scoreTabButtonElem.classList.toggle("button-primary", false);
+  scoreTabButtonElem.classList.toggle("button-secondary", true);
+  commentTabButtonElem.classList.toggle("button-primary", true);
+  commentTabButtonElem.classList.toggle("button-secondary", false);
 }
 
 const addScore = async () => {

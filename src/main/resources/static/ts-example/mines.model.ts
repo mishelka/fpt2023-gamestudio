@@ -1,4 +1,4 @@
-import {Random} from './random.js';
+import {Random} from '../utils.js';
 
 export enum GameState {
   PLAYING, FAILED, SOLVED

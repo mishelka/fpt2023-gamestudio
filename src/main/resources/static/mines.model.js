@@ -1,6 +1,6 @@
-import {Random} from './utils.js';
+import { Random } from './utils.js';
 
-export const GameState = {PLAYING: "PLAYING", FAILED: "FAILED", SOLVED: "SOLVED"};
+export const GameState = { PLAYING: "PLAYING", FAILED: "FAILED", SOLVED: "SOLVED" };
 export const TileState = { OPEN: "OPEN", CLOSED: "CLOSED", MARKED: "MARKED" };
 
 export class Field {
@@ -18,6 +18,7 @@ export class Field {
     for (let row = 0; row < this.rowCount; row++) {
       this.tiles[row] = new Array(this.columnCount);
     }
+    console.log(this.tiles);
 
     this.generate();
   }
@@ -48,7 +49,7 @@ export class Field {
   fillWithClues() {
     for (let row = 0; row < this.rowCount; row++) {
       for (let col = 0; col < this.columnCount; col++) {
-        if (!this.tiles[row][col]) {
+        if (this.tiles[row][col] === undefined) {
           this.tiles[row][col] = new Clue(this.countNeighbourMines(row, col));
         }
       }
