@@ -81,8 +81,8 @@ const renderField = () => {
   mineFieldElem.innerHTML = ""; //reset the playing field in the UI
   mineFieldElem.setAttribute("style", "grid-template-columns: " + "0fr ".repeat(field.columnCount));
 
-  for (let r = 0; r < 10; r++) {
-    for (let c = 0; c < 10; c++) {
+  for (let r = 0; r < field.rowCount; r++) {
+    for (let c = 0; c < field.columnCount; c++) {
       const tile = field.tiles[r][c];
       const tileElem = document.createElement("div");
 
@@ -199,6 +199,8 @@ const newGame = async (event) => {
   if(!cols) cols = 10;
   if(!mines) mines = 10;
 
+  console.log(rows, cols, mines);
+
   try {
     const response = await fetch(`${MINES_URL}/new?rows=${rows}&cols=${cols}&mines=${mines}`);
     if(response.status === 200) {
@@ -234,13 +236,30 @@ const loadComments = async () => {
 }
 
 const addScore = async () => {
-  let score = new Score('miska', 1000);
-  console.log(score);
+  let score = new Score('miska', field.score);
+  delete score.id;
+
+  try {
+    const response = await fetch(`${API_URL}/score`, {
+      method: 'post',
+      body: JSON.stringify(score),
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }
+    });
+    if (response.status === 200) {
+      console.log("Score successfully added!");
+      await loadScores();
+    }
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 const addComment = async () => {
-  const player = commentForm.name.value;
-  const message = commentForm.comment.value;
+  const player = document.commentForm.name.value;
+  const message = document.commentForm.comment.value;
 
   // const comment = {
   //   'game': 'mines',
@@ -264,6 +283,8 @@ const addComment = async () => {
     });
     if (response.status === 200) {
       console.log("Comment successfully added!");
+      document.commentForm.name.value = '';
+      document.commentForm.comment.value = '';
       await loadComments();
     }
   } catch (error) {
